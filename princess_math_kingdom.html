@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Princess Math Kingdom</title>
+<style>
+:root{--pink:#f7bfd5;--deep:#bd648e;--rose:#e99bb9;--cream:#fff9f5;--gold:#d6aa55;--ink:#65465a;--green:#5c9b78;--red:#c86d78}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:radial-gradient(circle at 15% 10%,#fff 0 2px,transparent 3px),radial-gradient(circle at 80% 20%,#fff 0 2px,transparent 3px),linear-gradient(135deg,#fff2f7,#f9d8e6 48%,#fff7ed);background-size:90px 90px,130px 130px,auto;padding:20px}
+.wrap{max-width:900px;margin:0 auto}
+header{text-align:center;padding:18px 10px 8px}
+.crown{font-size:42px;filter:drop-shadow(0 3px 2px #d9a4b7)}
+h1{font-size:clamp(2rem,6vw,3.5rem);margin:5px 0;color:#a94f79;text-shadow:0 2px #fff}
+.subtitle{font-family:Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;font-size:.75rem;color:#a56a82}
+.castle{height:115px;display:flex;justify-content:center;align-items:end;gap:7px;margin:10px auto 0;max-width:470px}
+.tower{background:linear-gradient(90deg,#f1a9c5,#ffe0e9);border:2px solid #d98eae;border-bottom:0;width:75px;height:75px;border-radius:9px 9px 0 0;position:relative}
+.tower:before{content:"";position:absolute;top:-31px;left:-4px;border-left:39px solid transparent;border-right:39px solid transparent;border-bottom:33px solid #c66f98}
+.tower.mid{height:104px;width:90px;background:linear-gradient(90deg,#f5bad0,#fff0f4)}
+.tower.mid:before{top:-37px;border-left:47px solid transparent;border-right:47px solid transparent;border-bottom:39px solid #b95d87}
+.tower span{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:35px;width:21px;background:#fff0f5;border:2px solid #d58eaa;border-radius:12px 12px 0 0}
+.flag{position:absolute;top:-40px;left:50%;width:2px;height:22px;background:#a94f79}
+.flag:after{content:"";position:absolute;top:0;left:2px;border-top:7px solid #d6aa55;border-bottom:7px solid transparent;border-right:16px solid transparent}
+.panel{background:rgba(255,255,255,.88);border:2px solid #efc1d2;border-radius:25px;padding:clamp(18px,4vw,34px);box-shadow:0 12px 35px rgba(157,82,119,.13);margin:18px auto}
+.topline{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;font-family:Arial,sans-serif;font-size:.9rem}
+.pill{background:#fff0f5;border:1px solid #f0c3d4;border-radius:30px;padding:8px 13px}
+.progress{height:10px;background:#f7e2eb;border-radius:20px;overflow:hidden;margin:15px 0 24px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#d77fa4,#e7b85e);transition:width .3s}
+h2{color:#a94f79;text-align:center;font-size:clamp(1.35rem,4vw,2rem);margin:8px 0 12px}
+.prompt{text-align:center;font-family:Arial,sans-serif;font-size:1.05rem;line-height:1.55;margin:12px auto 22px;max-width:650px}
+.math{font-size:clamp(2.1rem,8vw,3.4rem);text-align:center;color:#9d4d73;font-weight:bold;margin:20px 0}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:600px;margin:0 auto}
+.answer{border:2px solid #e9b3c8;background:#fff8fb;border-radius:16px;padding:16px 10px;font-size:1.15rem;color:#754d61;cursor:pointer;transition:.15s;font-family:Georgia,serif}
+.answer:hover:not(:disabled){transform:translateY(-2px);background:#ffedf4;border-color:#c96f98}
+.answer:disabled{cursor:default;opacity:1}
+.answer.correct{background:#e8f5ec;border-color:#75b58c;color:#326c4a}
+.answer.wrong{background:#fff0f0;border-color:#d98b91;color:#a74e58}
+.feedback{min-height:52px;text-align:center;font-family:Arial,sans-serif;font-weight:bold;line-height:1.45;margin:18px 0 8px}
+.next{display:block;margin:12px auto 0;border:0;border-radius:30px;padding:13px 28px;background:linear-gradient(100deg,#c76d97,#a94f79);color:white;font-size:1rem;cursor:pointer;box-shadow:0 5px 12px #dba5bc}
+.next:disabled{opacity:.45;cursor:not-allowed}
+.small{text-align:center;font-family:Arial,sans-serif;color:#9b7586;font-size:.85rem;margin-top:18px}
+.hidden{display:none!important}
+.result{text-align:center}
+.bigscore{font-size:3.8rem;color:#a94f79;margin:8px}
+.result p{font-family:Arial,sans-serif;line-height:1.6}
+.name{font-size:1.3rem;color:#b27a37}
+footer{text-align:center;font-size:.8rem;color:#a4778b;padding:12px}
+@media(max-width:520px){body{padding:10px}.answers{grid-template-columns:1fr}.castle{transform:scale(.85);transform-origin:top center;height:100px}.topline{justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="crown">♕</div>
+  <div class="subtitle">A magical fractions adventure</div>
+  <h1>Princess Math Kingdom</h1>
+  <div class="castle" aria-hidden="true">
+    <div class="tower"><div class="flag"></div><span></span></div>
+    <div class="tower mid"><div class="flag"></div><span></span></div>
+    <div class="tower"><div class="flag"></div><span></span></div>
+  </div>
+</header>
+
+<main class="panel" id="game">
+  <div class="topline">
+    <span class="pill" id="level">🌷 Question 1 of 10</span>
+    <span class="pill">⭐ Royal points: <b id="score">0</b></span>
+  </div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <h2 id="chapter">The Enchanted Garden</h2>
+  <p class="prompt" id="prompt">Help the kingdom by solving each fraction puzzle!</p>
+  <div class="math" id="math">½ + ¼ = ?</div>
+  <div class="answers" id="answers"></div>
+  <div class="feedback" id="feedback" aria-live="polite"></div>
+  <button class="next" id="next" disabled>Next question →</button>
+  <div class="small">Choose the best answer. Every correct answer earns 10 royal points!</div>
+</main>
+
+<section class="panel result hidden" id="result">
+  <div class="crown">👑</div>
+  <h2>The Royal Results</h2>
+  <div class="bigscore" id="finalscore">0/100</div>
+  <div class="name" id="rank">Princess in Training</div>
+  <p id="message"></p>
+  <button class="next" id="again">Play again ↻</button>
+</section>
+<footer>Made with ♡ for curious mathematicians · Fractions &amp; Mixed Numbers</footer>
+</div>
+<script>
+const questions=[
+ {chapter:"The Enchanted Garden",prompt:"The royal gardener waters half of the roses in the morning and one fourth in the evening. How much of the garden's roses did she water?",math:"½ + ¼ = ?",a:["¾","⅔","⅖","1"],c:0,why:"½ is the same as 2/4. Then 2/4 + 1/4 = 3/4."},
+ {chapter:"The Royal Bakery",prompt:"A princess eats 3/8 of a strawberry cake. Her sister eats 2/8. How much cake did they eat altogether?",math:"⅜ + ⅖ = ?",a:["⅝","⅚","⅜","⅞"],c:0,why:"The denominators are the same, so add the numerators: 3/8 + 2/8 = 5/8."},
+ {chapter:"The Crystal Ballroom",prompt:"Which fraction is equivalent to ½?",math:"½ = ?",a:["2/3","3/6","2/5","4/6"],c:1,why:"Multiply the numerator and denominator by 3: 1/2 = 3/6."},
+ {chapter:"The Dragon's Treasure",prompt:"The dragon has 7/10 of its treasure left and gives away 3/10. How much remains?",math:"7/10 − 3/10 = ?",a:["4/10","4/20","10/10","3/10"],c:0,why:"Subtract the numerators: 7 − 3 = 4. The denominator stays 10."},
+ {chapter:"The Princess's Picnic",prompt:"A picnic basket has 1 whole pie and ¾ of another pie. What is this as a mixed number?",math:"1 + ¾ = ?",a:["1¾","¾","2¼","1⅓"],c:0,why:"One whole and three fourths is written as the mixed number 1¾."},
+ {chapter:"The Moonlit Library",prompt:"Which improper fraction is equal to the mixed number 2½?",math:"2½ = ?",a:["5/2","3/2","4/2","5/3"],c:0,why:"2 wholes = 4/2. Add 1/2 to get 5/2."},
+ {chapter:"The Unicorn Bridge",prompt:"A ribbon is 9/4 metres long. How many whole metres and fourths is that?",math:"9/4 = ?",a:["2¼","1¼","3¼","2½"],c:0,why:"8/4 makes 2 wholes, with 1/4 left over. So 9/4 = 2¼."},
+ {chapter:"The Queen's Garden",prompt:"Which is greater?",math:"⅔  or  ¾",a:["⅔","¾","They are equal","Cannot tell"],c:1,why:"¾ = 9/12 and ⅔ = 8/12, so ¾ is greater."},
+ {chapter:"The Golden Crown",prompt:"A crown needs 2½ grams of gold. The jeweller has 1½ grams. How much more gold is needed?",math:"2½ − 1½ = ?",a:["1","½","2","1½"],c:0,why:"Subtract the whole numbers and halves: 2½ − 1½ = 1."},
+ {chapter:"The Royal Celebration",prompt:"A royal cake is cut into 8 equal pieces. The guests eat 6 pieces. What fraction of the cake is left?",math:"8/8 − 6/8 = ?",a:["¼","⅜","⅔","⅛"],c:0,why:"2/8 remains, and 2/8 simplifies to 1/4."}
+];
+let index=0,score=0,answered=false;
+const $=id=>document.getElementById(id);
+function render(){
+ const q=questions[index];answered=false;
+ $("level").textContent=`🌷 Question ${index+1} of ${questions.length}`;
+ $("score").textContent=score;
+ $("bar").style.width=`${index/questions.length*100}%`;
+ $("chapter").textContent=q.chapter;
+ $("prompt").textContent=q.prompt;
+ $("math").textContent=q.math;
+ $("feedback").textContent="";
+ $("next").disabled=true;
+ $("next").textContent=index===questions.length-1?"See my royal results ✨":"Next question →";
+ $("answers").innerHTML="";
+ q.a.forEach((v,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=v;b.onclick=()=>choose(i);$("answers").appendChild(b)});
+}
+function choose(choice){
+ if(answered)return;answered=true;
+ const q=questions[index],buttons=[...document.querySelectorAll(".answer")];
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add("correct");else if(i===choice)b.classList.add("wrong")});
+ if(choice===q.c){score+=10;$("feedback").textContent="✨ Correct! +10 royal points. "+q.why;$("feedback").style.color="#43835d"}
+ else{$("feedback").textContent="Not quite, royal learner! "+q.why;$("feedback").style.color="#a65b70"}
+ $("score").textContent=score;$("next").disabled=false;
+}
+$("next").onclick=()=>{
+ if(!answered)return;
+ if(index<questions.length-1){index++;render()}else finish();
+};
+function finish(){
+ $("game").classList.add("hidden");$("result").classList.remove("hidden");
+ $("bar").style.width="100%";$("finalscore").textContent=score+"/100";
+ let rank,message;
+ if(score===100){rank="Queen of Fractions 👑";message="Perfect score! You have mastered the kingdom's fraction challenges."}
+ else if(score>=80){rank="Princess of Mathematics ✨";message="Amazing work! You are a fraction superstar."}
+ else if(score>=50){rank="Royal Math Knight 🌷";message="Great effort! Keep practising and your skills will grow."}
+ else{rank="Princess in Training 💗";message="Every royal mathematician practises. Try again and see how much you can improve!"}
+ $("rank").textContent=rank;$("message").textContent=message;
+}
+$("again").onclick=()=>{index=0;score=0;$("result").classList.add("hidden");$("game").classList.remove("hidden");render()};
+render();
+</script>
+</body>
+</html>
